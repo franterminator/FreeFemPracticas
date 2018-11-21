@@ -1,0 +1,36 @@
+//////////////////////////////////////////////
+// Contorno
+border rext (t=0,2*pi)
+{
+	x=3*cos(t);
+	y=3*sin(t);
+};
+
+border rint1 (t=0,1)
+{
+	x=t;
+	y=0.17735*sqrt(t)-0.075597*t-0.212836*t^2+0.17363*t^3-0.06254*t^4;
+};
+
+border rint2 (t=0,1) //signo cambiado
+{
+	x=t;
+	y=-0.17735*sqrt(t)+0.075597*t+0.212836*t^2-0.17363*t^3+0.06254*t^4;
+};
+
+
+//////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(rext(200)+rint1(200)+rint2(-200));
+plot(Malla);
+
+//////////////////////////////////////////////
+// Espacio
+fespace Elemento(Malla,P2);
+Elemento eps,w;
+
+//////////////////////////////////////////////
+// Solve
+func f = y-x/2;
+solve pr4c(eps,w) = int2d(Malla)(dx(w)*dx(eps)+dy(w)*dy(eps))+on(rext,eps=f)+on(rint1,eps=0)+on(rint2,eps=0);
+plot(eps);

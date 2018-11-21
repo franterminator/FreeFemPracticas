@@ -1,0 +1,11 @@
+real alpha=0.00001;
+border a(t=0,0.15){x=t;y=0;};
+border b(t=0,0.1){x=0.15;y=t;};
+border c(t=0.15,0){x=t;y=0.1;};
+border d(t=0.1,0){x=0;y=t;};
+mesh Malla = buildmesh(a(100)+b(100)+c(100)+d(100));
+plot(Malla);
+fespace vh(Malla,P1);
+vh u,w;
+solve calor(u,w)=int2d(Malla)(alpha*(dx(w)*dx(u)+dy(w)*dy(u)))+on(a,u=100)+on(b,u=20)+on(c,u=0)+on(d,u=20);
+plot(u);

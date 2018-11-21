@@ -1,0 +1,29 @@
+//////////////////////////////////////////////
+// Contorno
+border rext (t=0,2*pi)
+{
+	x=3*cos(t);
+	y=3*sin(t);
+};
+
+border rint (t=0,2*pi)
+{
+	x=cos(t);
+	y=sin(t);
+};
+
+//////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(rext(200)+rint(-200));
+plot(Malla);
+
+//////////////////////////////////////////////
+// Espacio
+fespace Elemento(Malla,P2);
+Elemento eps,w;
+
+//////////////////////////////////////////////
+// Solve
+func f = y;
+solve pr4b(eps,w) = int2d(Malla)(dx(w)*dx(eps)+dy(w)*dy(eps))+on(rext,eps=f)+on(rint,eps=0);
+plot(eps);
