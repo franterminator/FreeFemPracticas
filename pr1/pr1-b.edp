@@ -1,0 +1,20 @@
+///////////////////////////////////////////////////////
+// Contorno
+border a(t=0,2*pi) // sentido antihorario
+{
+	x=3*cos(t);
+	y=3*sin(t);
+};
+
+border b(t=0,2*pi) //sentido antihorario
+{
+	x=cos(t); 
+	y=sin(t);
+};
+
+
+///////////////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(a(50)+b(-50)); // cambiar sentido de b
+plot(Malla);
+

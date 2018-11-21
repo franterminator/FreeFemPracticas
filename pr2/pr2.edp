@@ -1,0 +1,28 @@
+///////////////////////////////////////////////////////
+// Contorno
+border a(t=0,2){x=t; y=0;};
+border b(t=0,1){x=2+2*t; y=t;};
+border c(t=1,2){x=4; y=t;};
+border d(t=4,2){x=t; y=2;};
+border e(t=2,1){x=2*t-2; y=t;};
+border f(t=1,0){x=0; y=t;};
+
+///////////////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(a(50)+b(50)+c(50)+d(50)+e(50)+f(50));
+plot(Malla);
+
+///////////////////////////////////////////////////////
+// Espacio
+fespace Elemento(Malla,P1);
+Elemento u,w;
+
+///////////////////////////////////////////////////////
+// Solucion
+solve pr2(u,w) = int2d(Malla)(dx(w)*dx(u)+dy(w)*dy(u)) -
+					int1d(Malla,c)(10*w) -
+					int1d(Malla,f)(10*w) -
+					int2d(Malla)(12*w) + 
+					on(e,u=10) +
+					on(b,u=10);
+plot(u);

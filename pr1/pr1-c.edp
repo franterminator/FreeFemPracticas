@@ -1,0 +1,24 @@
+///////////////////////////////////////////////////////
+// Contorno
+border a(t=0,2*pi) // sentido antihorario
+{
+	x=3*cos(t);
+	y=3*sin(t);
+};
+border naca1(t=0,1) //sentido horario
+{
+	x=t; 
+	y=0.17735*sqrt(t)-0.075597*t-0.212836*t^2+0.17363*t^3-0.06254*t^4;
+};
+border naca2(t=0,1) //sentido antihorario
+{
+	x=t; 
+	y=-(0.17735*sqrt(t)-0.075597*t-0.212836*t^2+0.17363*t^3-0.06254*t^4);
+};
+
+
+///////////////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(a(50)+naca1(50)+naca2(-50)); 
+plot(Malla);
+

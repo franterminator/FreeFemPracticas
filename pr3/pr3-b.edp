@@ -1,0 +1,21 @@
+real ancho = 0.075;
+real alto = 0.1;
+
+border a(t=0,ancho){x=t;y=0;};
+border b(t=0,alto){x=ancho;y=t;};
+border c(t=ancho,0){x=t;y=alto;};
+border d(t=alto,0){x=0;y=t;};
+
+mesh Malla = buildmesh(a(100)+b(100)+c(100)+d(100));
+plot(Malla);
+
+fespace vh(Malla,P1);
+vh u,w;
+
+solve calor(u,w)=
+	int2d(Malla)((dx(w)*dx(u)+dy(w)*dy(u))) + 
+	on(a,u=100) + 
+	on(c,u=0) + 
+	on(d,u=20);
+
+plot(u);
