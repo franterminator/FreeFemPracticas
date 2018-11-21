@@ -1,0 +1,7 @@
+#+Title:: Free Fem practicas 
+#+Author: franterminator
+
+* Introducción
+Estos archivos contienen las practicas del curso 2018-2019 de la asignatura de Mecánica Computacional. Son prácticas sencillas para ejercitarse en Free Fem. 
+* Uso
+Cualquiera puede usarlas y distribuirlas con total libertad.
