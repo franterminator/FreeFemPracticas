@@ -1,0 +1,51 @@
+//////////////////////////////////////////////
+// Contorno
+//             ********* c ************
+//             *                      *
+//             *                      *
+//             d                      b
+//             *                      *
+//             *                      *
+//             *                      *
+//             ********* a ************
+
+border a (t=0,20){x=t; y=0;};
+border b (t=0,2){x=20; y=t;};
+border c (t=20,0){x=t; y=2;};
+border d (t=2,0){x=0; y=t;};
+
+
+//////////////////////////////////////////////
+// Coeficientes
+real E = 2.1e8;
+real nu = 0.1;
+
+real lambda = E*nu/((1-nu)*(1+nu));
+real mu = E/(2*(1+nu));
+
+
+
+//////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(a(200)+b(200)+c(200)+d(200));
+plot(Malla);
+
+//////////////////////////////////////////////
+// Espacio
+fespace Elemento(Malla,P1);
+Elemento u,v,wu,wv;
+
+//////////////////////////////////////////////
+// Solve
+real f2 = -77;
+solve viga([u,v],[wu,wv]) = 
+	int2d(Malla)(
+		lambda*(dx(wu)+dy(wv))*(dx(u)+dy(v)) +
+		2*mu*(dx(u)*dx(wu)+dy(v)*dy(wv)+1./2.*(dy(u)+dx(v))*(dy(wu)+dx(wv)))) - 
+	int2d(Malla)(f2*wv) + 
+	on(d,u=0,v=0);
+
+plot(u);
+
+mesh Deformada = movemesh(Malla,[x+100*u,y+100*v]);
+plot(Deformada);
