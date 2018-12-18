@@ -1,0 +1,59 @@
+//////////////////////////////////////////////
+// Contorno
+//             ********* c ************
+//             *                      *
+//             *                      *
+//             d                      b
+//             *                      *
+//             *                      *
+//             *                      *
+//             ********* a ************
+
+
+border a (t=0,5){x=t; y=0;};
+border b (t=0,10){x=5; y=t;};
+border c (t=5,0){x=t; y=10;};
+border d (t=10,0){x=0; y=t;};
+
+
+//////////////////////////////////////////////
+// Coeficientes
+real E = 2.1e8;
+real nu = 0.3;
+real gamma = 10;
+real t = 0.05;
+real D = E * t * 3 / (12 * (1-nu^2) );
+
+
+//////////////////////////////////////////////
+// Funcion
+func f = (-gamma*y+gamma*5./2.)*(y<5./2.)+0;
+
+
+//////////////////////////////////////////////
+// Malla
+mesh Malla = buildmesh(a(25)+b(50)+c(25)+d(50));
+plot(Malla);
+
+//////////////////////////////////////////////
+// Espacio
+fespace Elemento(Malla,P1);
+Elemento u,w;
+
+//////////////////////////////////////////////
+// Solve (round 1)
+solve flecha(u,w) = 
+	int2d(Malla)(dx(w)*dx(u)+dy(w)*dy(u)) -
+	int2d(Malla)(w*f) +
+	on(a,u=0) + on(b,u=0) + on(c,u=0) + on(d,u=0);
+
+plot(u);
+
+// Solve (round 2)
+Elemento m,s;
+solve momento(m,s) = 
+	int2d(Malla)(dx(s)*dx(m)+dy(s)*dy(m)) -
+	int2d(Malla)(s*u) +
+	on(a,m=0) + on(b,m=0) + on(c,m=0) + on(d,m=0);
+
+plot(m);
