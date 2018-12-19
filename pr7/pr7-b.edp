@@ -1,0 +1,43 @@
+real ancho = 0.075;
+real alto = 0.1;
+
+border a(t=0,ancho){x=t;y=0;};
+border b(t=0,alto){x=ancho;y=t;};
+border c(t=ancho,0){x=t;y=alto;};
+border d(t=alto,0){x=0;y=t;};
+
+mesh Malla = buildmesh(a(100)+b(100)+c(100)+d(100));
+plot(Malla);
+
+
+real alpha = 1e-5;
+real t=0;
+real T=100;
+real dt=5;
+
+
+real h=1;
+real k=1000;
+
+fespace vh(Malla,P1);
+vh u,w,u0;
+
+// first step
+u = 0;
+plot(u);
+
+for(t=0;t<T;t+=dt) {
+	u0 = u;
+	solve calor(u,w)=
+		int2d(Malla)(u*w/dt) - 
+		int2d(Malla)(u0*w/dt) +
+		int2d(Malla)(alpha*(dx(w)*dx(u)+dy(w)*dy(u))) + 
+		int1d(Malla,d)(w*alpha*h/k*u) +
+		on(a,u=100) + 
+		on(d,u=20);
+
+plot(u);
+
+
+
+};
