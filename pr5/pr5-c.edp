@@ -27,7 +27,7 @@ real mu = E/(2*(1+nu));
 
 //////////////////////////////////////////////
 // Malla
-mesh Malla = buildmesh(a(200)+b(200)+c(200)+d(200));
+mesh Malla = buildmesh(a(500)+b(50)+c(500)+d(50));
 plot(Malla);
 
 //////////////////////////////////////////////
@@ -37,15 +37,20 @@ Elemento u,v,wu,wv;
 
 //////////////////////////////////////////////
 // Solve
-real f2 = -77;
+
 solve viga([u,v],[wu,wv]) = 
 	int2d(Malla)(
 		lambda*(dx(wu)+dy(wv))*(dx(u)+dy(v)) +
 		2*mu*(dx(u)*dx(wu)+dy(v)*dy(wv)+1./2.*(dy(u)+dx(v))*(dy(wu)+dx(wv)))) - 
-	int2d(Malla)(f2*wv) + 
+	int1d(Malla,b)(-0.5*wv) +
 	on(d,u=0,v=0);
 
 plot(u);
 
 mesh Deformada = movemesh(Malla,[x+100*u,y+100*v]);
 plot(Deformada);
+
+
+cout<<"********************************************************"<<endl;
+cout<<"****   ui -> "<<u(20,1)<<"   /  vi ->"<<v(20,1)<<" ****"<<endl;
+cout<<"********************************************************"<<endl;

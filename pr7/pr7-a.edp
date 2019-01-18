@@ -32,7 +32,7 @@ for(t=0;t<T;t+=dt) {
 		int2d(Malla)(u*w/dt) - 
 		int2d(Malla)(u0*w/dt) +
 		int2d(Malla)(alpha*(dx(w)*dx(u)+dy(w)*dy(u))) + 
-		int1d(Malla,d)(w*alpha*h/k*
+		int1d(Malla,d)(w*alpha*h/k*u)+
 		on(a,u=100) + 
 		on(c,u=0) + 
 		on(d,u=20);
